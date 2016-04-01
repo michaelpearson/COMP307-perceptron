@@ -13,20 +13,20 @@ public class Main {
     public static void main(String[] argv) throws FileNotFoundException {
         List<Image> images = loadImages(argv[0]);
         List<Feature> features = new ArrayList<>();
-        for(int a = 0;a < 100;a++) {
+        for(int a = 0;a < 50;a++) {
             features.add(new Feature(10, 10, 4));
         }
-
-        Perceptron p = new Perceptron(features, 0.5);
-        p.train(images);
+        Perceptron p = new Perceptron(features, 0.025);
+        p.train(images, 1);
+        p.evaluate(images);
+        features.forEach(System.out::println);
     }
 
 
     private static List<Image> loadImages(String fileName) throws FileNotFoundException {
         Scanner f = new Scanner(new File(fileName));
         List<Image> build = new ArrayList<>();
-        Pattern bit = java.util.regex.Pattern.compile("[01]");
-
+        Pattern bit = Pattern.compile("[01]");
         while(f.hasNextLine()) {
             Image i = new Image();
             if (!f.next().equals("P1")) System.out.println("Not a P1 PBM file");

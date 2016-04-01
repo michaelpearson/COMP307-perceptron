@@ -24,6 +24,15 @@ public class Perceptron {
             }
             return null;
         }
+        public static ImageClass fromValue(int value) {
+            switch(value) {
+                default:
+                case 0:
+                    return O;
+                case 1:
+                    return X;
+            }
+        }
     }
 
     public Perceptron(List<Feature> features, double learningRate) {
@@ -31,26 +40,33 @@ public class Perceptron {
         this.learningRate = learningRate;
     }
 
-    public void train(List<Image> images) {
-        for(int a = 0;a < 1000;a++) {
+    public void train(List<Image> images, double trainingExpectation) {
+        int a;
+        for(a = 0;a < 1000;a++) {
+            int correct = 0;
             for (Image i : images) {
                 double result = 0;
                 for (Feature f : features) {
                     result += f.evaluateFeature(i.data) * f.getWeight();
                 }
                 int actual = i.actualClass.value;
+                double error = result - actual;
                 if ((result > 0 && actual == 1) || (result <= 0 && actual == 0)) {
-                    //Prediction was correct
+                    correct++;
                     continue;
                 }
-
-                double error = result - actual;
                 for (Feature f : features) {
                     f.updateWeight(error * learningRate * f.evaluateFeature(i.data));
                 }
             }
+            if(correct >= images.size() * trainingExpectation) {
+                System.out.printf("Convergence reached\n");
+                break;
+            }
         }
-
+        System.out.printf("Total of %d training cycle(s)\n", a);
+    }
+    public void evaluate(List<Image> images) {
         int correct = 0;
         int incorrect = 0;
         for (Image i : images) {
@@ -58,6 +74,10 @@ public class Perceptron {
             for(Feature f : features) {
                 actualOutput += f.evaluateFeature(i.data) * f.getWeight();
             }
+            ImageClass actualOutputClass = ImageClass.fromValue(actualOutput > 0 ? 1 : 0);
+            //System.out.printf("This is a \"%s\", output value: %2.2f\n", actualOutputClass.toString(), actualOutput);
+            //i.print();
+
             int actualClass = i.actualClass.value;
             if ((actualOutput > 0 && actualClass == 1) || (actualOutput <= 0 && actualClass == 0)) {
                 correct++;
@@ -65,6 +85,6 @@ public class Perceptron {
                 incorrect++;
             }
         }
-        System.out.printf("Correct: %2.2f%%\n", ((double)correct / (incorrect + correct)) * 100);
+        System.out.printf("Correct: %2.2f%% (%d from %d)\n", ((double)correct / (incorrect + correct)) * 100, correct, incorrect + correct);
     }
 }
