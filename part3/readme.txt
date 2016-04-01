@@ -4,6 +4,6 @@ To compile and execute the program:
     javac *.java
 
 2- Execute the compiled files using the command:
-    java MakeImage
+    java tools.MakeImage
 
  

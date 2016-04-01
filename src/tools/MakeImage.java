@@ -1,4 +1,4 @@
-/* Code for COMP 307 Assignment 
+package tools;/* Code for COMP 307 Assignment
  * Name:
  * Usercode:
  * ID:
@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.io.*;
 
 
@@ -38,13 +37,13 @@ public class MakeImage implements MouseListener, MouseMotionListener {
     // Constructors
 
     /**
-     * Construct a new MakeImage object
+     * Construct a new tools.MakeImage object
      * and set up the GUI
      */
     public MakeImage(String cn) {
         categoryName = cn;
 
-        frame = new JFrame("MakeImage");
+        frame = new JFrame("tools.MakeImage");
         frame.setSize(600, 400);
 
 
